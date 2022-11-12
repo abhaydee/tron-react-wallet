@@ -10,7 +10,7 @@
   margin-top: 10vh;
   background-color: rgba(0, 0, 0, 0.575);
   width: 35em;
-  height: 45em;
+  height: 48em;
   border-radius: 3em;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -55,10 +55,41 @@ p {
 }
 
 footer {
+  margin-top: 1rem;
   position: absolute;
   bottom: 1em;
   width: 100%;
   color: rgba(255, 255, 255, 0.76);
   border-radius: 0em 0em 1em 1em;
   padding-top: 2em;
+}
+
+.cta-button{
+  height: 45px;
+  border: 0;
+  width: 70%;
+  align-self: center;
+  padding-left: 40px;
+  padding-right: 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.cta-button :hover{
+  cursor: pointer;
+}
+.connect-wallet-button{
+  background: -webkit-linear-gradient(left, #60c657, #35aee2);
+  background-size: 200% 200%;
+  animation: gradient-animation 4s ease infinite;
+}
+
+
+.flexColumn{
+  display: flex;
+  flex-direction: column;
 }

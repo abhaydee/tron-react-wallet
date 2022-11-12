@@ -27,6 +27,10 @@ function App() {
     }
   };
 
+  const navigateToAlgoVerse = () =>{
+      console.log("navigating to algoverse")
+  }
+
   const getWalletDetails = async () => {
     if (window.tronWeb) {
       //checking if wallet injected
@@ -108,6 +112,10 @@ function App() {
     };
   });
 
+  const navigateToBuyMerge = () =>{
+        
+  }
+
   return (
     <div className="App">
       <div className="Card">
@@ -129,10 +137,21 @@ function App() {
           </h4>
           <h4>Network Selected: {myDetails.network}</h4>
           <h4>Link Established: {myDetails.link}</h4>
+          <div className='flexColumn'>
+          {myDetails.name && 
+                    <button className='cta-button connect-wallet-button' onClick={navigateToAlgoVerse()}> Connect to TronVerse</button>
+
+          }
+
+          {myDetails.name && 
+             <button className='cta-button connect-wallet-button' onClick={navigateToBuyMerge()}> Buy Tron Merge</button>
+          }
+          </div>
+          
         </div>
-        <footer>
+        {/* <footer className='footer'>
           <p> Decentralize with TRON......</p>
-        </footer>
+        </footer> */}
       </div>
     </div>
   );
