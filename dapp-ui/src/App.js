@@ -166,6 +166,14 @@ function App({}) {
     setBuyState(true);
   };
 
+  const createSocialEvent = () => {
+
+  }
+
+  const registerForSocialEvent = ()=>{
+
+  }
+
   const buyNft = async (nftId) => {
     triggerSmartContract(nftId);
   };
@@ -217,6 +225,24 @@ function App({}) {
                 >
                   {" "}
                   Buy Tron Merge
+                </button>
+              )}
+              {myDetails.name && (
+                <button
+                  className="cta-button connect-wallet-button"
+                  onClick={createSocialEvent}
+                >
+                  {" "}
+                  Create a Social Event
+                </button>
+              )}
+              {myDetails.name && (
+                <button
+                  className="cta-button connect-wallet-button"
+                  onClick={registerForSocialEvent}
+                >
+                  {" "}
+                  Register for a Social Event
                 </button>
               )}
             </div>
