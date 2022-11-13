@@ -11,6 +11,9 @@ function App({}) {
   const [mintedState, setMintedState] = useState("BUY");
   const [mintedState2, setMintedState2] = useState("BUY");
   const [mintedState3, setMintedState3] = useState("BUY");
+  const [instance, setInstance] = useState(null);
+  const [socialEventState, setSocialEventState] = useState("Create a Social Event");
+  const [registerEventState, setRegisterEventState] = useState("Register a Social Event");
   const [walletState, setWalletState] = useState("Connect wallet");
   const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
   const fullNode = new HttpProvider("https://api.trongrid.io"); // Full node http endpoint
@@ -32,16 +35,17 @@ function App({}) {
       setMintedState3("Minting.....")
     }
 
-    const trc721ContractAddress = "TDXDt9aCYd4rRvK2VzPLQbTX1WHzJQxP6k"; //contract address
+    const trc721ContractAddress = "TKT9XngwGT71TFZigzJmB2cj6vcrUfFbqC"; //contract address
     try {
       let instance = await window.tronWeb.contract().at(trc721ContractAddress);
       //Use call to execute a pure or view smart contract method.
+      setInstance(instance)
       // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
       const balance = await instance
-        .balanceOf("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn")
+        .balanceOf(window.tronWeb.defaultAddress.base58)
         .call();
 
-      console.log("contract: ", balance.toNumber());
+      console.log("contract: ", instance);
       // console.log(instance.abi[6].balanceOf(window.tronWeb.defaultAddress.base58))
       instance.makeAnEpicNFT(window.tronWeb.defaultAddress.base58);
       // let result = await contract.symbol().call();
@@ -176,10 +180,13 @@ function App({}) {
   };
 
   const createSocialEvent = () => {
-
+    instance.createEvent("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn", "Sagar Reddy.A silent hero. A watchful protector.", "Intro to smart contract")
+    setSocialEventState("Social Event Created")
   }
 
   const registerForSocialEvent = ()=>{
+    instance.registerEvent("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn", "Sagar Reddy.A silent hero. A watchful protector.", "Intro to smart contract")
+    setRegisterEventState("Register Event Created")
 
   }
 
@@ -233,7 +240,7 @@ function App({}) {
                   onClick={navigateToBuyMerge}
                 >
                   {" "}
-                  Buy Tron Merge
+                  Buy Tron Merch
                 </button>
               )}
               {myDetails.name && (
@@ -242,7 +249,7 @@ function App({}) {
                   onClick={createSocialEvent}
                 >
                   {" "}
-                  Create a Social Event
+                  {socialEventState}
                 </button>
               )}
               {myDetails.name && (
@@ -251,7 +258,7 @@ function App({}) {
                   onClick={registerForSocialEvent}
                 >
                   {" "}
-                  Register for a Social Event
+                  {registerEventState}
                 </button>
               )}
             </div>
