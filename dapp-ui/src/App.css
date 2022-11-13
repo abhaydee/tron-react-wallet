@@ -10,7 +10,7 @@
   margin-top: 10vh;
   background-color: rgba(0, 0, 0, 0.575);
   width: 35em;
-  height: 48em;
+  height: 50em;
   border-radius: 3em;
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -86,6 +86,9 @@ footer {
   background: -webkit-linear-gradient(left, #60c657, #35aee2);
   background-size: 200% 200%;
   animation: gradient-animation 4s ease infinite;
+}
+.connect-wallet-button :hover{
+  cursor: pointer;
 }
 
 

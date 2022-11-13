@@ -9,20 +9,10 @@ const TronWeb = require("tronweb");
 function App({}) {
   const [buyState, setBuyState] = useState(false);
   const [mintedState, setMintedState] = useState("BUY");
-  const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
-  const fullNode = new HttpProvider("https://api.trongrid.io"); // Full node http endpoint
-  const solidityNode = new HttpProvider("https://api.trongrid.io"); // Solidity node http endpoint
-  const eventServer = "https://api.trongrid.io/";
-
-  const privateKey =
-    "930f604f50a311d849b5102c9134d41ab1ab994bfee7721278d8017207ec3377";
-
-  const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
-
+  const [walletState, setWalletState] = useState("Connect wallet")
   async function triggerSmartContract() {
     setMintedState("Minting.....");
     const trc721ContractAddress = "TDXDt9aCYd4rRvK2VzPLQbTX1WHzJQxP6k"; //contract address
-    const abi = [contract];
     try {
       let instance = await window.tronWeb.contract().at(trc721ContractAddress);
       //Use call to execute a pure or view smart contract method.
@@ -41,12 +31,6 @@ function App({}) {
       console.error("trigger smart contract error", error);
     }
   }
-
-  // useEffect(() => {
-  //   if (window.tronWeb && window.tronWeb.ready) {
-  //     triggerSmartContract();
-  //   }
-  // }, [window.tronWeb.ready]);
 
   const [myMessage, setMyMessage] = useState(<h3> LOADING.. </h3>);
   const [myDetails, setMyDetails] = useState({
@@ -120,6 +104,7 @@ function App({}) {
 
         //we have wallet and we are logged in
         setMyMessage(<h3>WALLET CONNECTED</h3>);
+        setWalletState("Tron Link Connected")
         setMyDetails({
           name: window.tronWeb.defaultAddress.name,
           address: window.tronWeb.defaultAddress.base58,
@@ -148,7 +133,7 @@ function App({}) {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      getWalletDetails();
+      // getWalletDetails();
       //wallet checking interval 2sec
     }, 2000);
     return () => {
@@ -164,6 +149,10 @@ function App({}) {
   const buyNft = async () => {
     triggerSmartContract()
   };
+
+  const connectWallet = async () =>{
+    getWalletDetails();
+  }
   return (
     <>
       <div className="App">
@@ -183,6 +172,15 @@ function App({}) {
             <h4>Network Selected: {myDetails.network}</h4>
             <h4>Link Established: {myDetails.link}</h4>
             <div className="flexColumn">
+              
+                 <button
+                 className="cta-button connect-wallet-button"
+                 onClick={connectWallet}
+               >
+                 {" "}
+                 {walletState}
+               </button>
+              
               {myDetails.name && (
                 <button
                   className="cta-button connect-wallet-button"
