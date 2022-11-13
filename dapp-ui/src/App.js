@@ -2,12 +2,13 @@ import { React, useState, useEffect } from "react";
 import "./App.css";
 import Merge from "./Components/Merge";
 import logo from "./logo.svg";
-import Axios from "axios"
-import contract from "./contracts.json"
+import Axios from "axios";
+import contract from "./contracts.json";
 const TronWeb = require("tronweb");
 //template code for connecting react and tron network
 function App({}) {
   const [buyState, setBuyState] = useState(false);
+  const [mintedState, setMintedState] = useState("BUY");
   const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
   const fullNode = new HttpProvider("https://api.trongrid.io"); // Full node http endpoint
   const solidityNode = new HttpProvider("https://api.trongrid.io"); // Solidity node http endpoint
@@ -19,17 +20,23 @@ function App({}) {
   const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
   async function triggerSmartContract() {
+    setMintedState("Minting.....");
     const trc721ContractAddress = "TDXDt9aCYd4rRvK2VzPLQbTX1WHzJQxP6k"; //contract address
-    const abi = [contract]
+    const abi = [contract];
     try {
       let instance = await window.tronWeb.contract().at(trc721ContractAddress);
       //Use call to execute a pure or view smart contract method.
       // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
-      console.log("contract: ", contract);
-      console.log(instance.abi[0].output[6].balanceOf(window.tronWeb.defaultAddress.base58))
-      instance.abi[0].output[10].makeAnEpicNFT(window.tronWeb.defaultAddress.base58);
+      const balance = await instance
+        .balanceOf("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn")
+        .call();
+
+      console.log("contract: ", balance.toNumber());
+      // console.log(instance.abi[6].balanceOf(window.tronWeb.defaultAddress.base58))
+      instance.makeAnEpicNFT(window.tronWeb.defaultAddress.base58);
       // let result = await contract.symbol().call();
       // console.log("result: ", result);
+      setMintedState("Minted");
     } catch (error) {
       console.error("trigger smart contract error", error);
     }
@@ -65,7 +72,7 @@ function App({}) {
 
   const navigateToAlgoVerse = () => {
     console.log("navigating to algoverse");
-    triggerSmartContract();
+    // triggerSmartContract();
   };
 
   const getWalletDetails = async () => {
@@ -154,16 +161,8 @@ function App({}) {
     setBuyState(true);
   };
 
-  const buyNft = async() => {
-    const data = await Axios.post(
-      "https://api.trongrid.io/wallet/createtransaction",
-      {
-        to_address: "TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn",
-        owner_address: "TC5XGhFUgp3Sp3N3oeTC3ttbApnvB2AUTS",
-        amount: 1,
-      },
-    );
-    console.log("the data",data)
+  const buyNft = async () => {
+    triggerSmartContract()
   };
   return (
     <>
@@ -221,7 +220,7 @@ function App({}) {
               className="cta-button connect-wallet-button"
               onClick={buyNft}
             >
-              BUY
+              {mintedState}
             </button>
           </div>
           <div className="card">
@@ -232,7 +231,10 @@ function App({}) {
             />
             <h4> NFT 2</h4>
             <p> NFT1 description</p>
-            <button className="cta-button connect-wallet-button">BUY</button>
+            <button className="cta-button connect-wallet-button">
+              {" "}
+              {mintedState}
+            </button>
           </div>
           <div className="card">
             <img
@@ -242,7 +244,10 @@ function App({}) {
             />
             <h4> NFT 3</h4>
             <p> NFT1 description</p>
-            <button className="cta-button connect-wallet-button">BUY</button>
+            <button className="cta-button connect-wallet-button">
+              {" "}
+              {mintedState}
+            </button>
           </div>
         </div>
       )}
