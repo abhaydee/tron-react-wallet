@@ -3,6 +3,7 @@ import "./App.css";
 import Merge from "./Components/Merge";
 import logo from "./logo.svg";
 import Axios from "axios"
+import contract from "./contracts.json"
 const TronWeb = require("tronweb");
 //template code for connecting react and tron network
 function App({}) {
@@ -18,14 +19,15 @@ function App({}) {
   const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
 
   async function triggerSmartContract() {
-    const trc721ContractAddress = "TMEY993cdweyrGWyZpNWNnaLnp4PUwPumN"; //contract address
-
+    const trc721ContractAddress = "TDXDt9aCYd4rRvK2VzPLQbTX1WHzJQxP6k"; //contract address
+    const abi = [contract]
     try {
-      let contract = await tronWeb.contract().at(trc721ContractAddress);
+      let instance = await window.tronWeb.contract().at(trc721ContractAddress);
       //Use call to execute a pure or view smart contract method.
       // These methods do not modify the blockchain, do not cost anything to execute and are also not broadcasted to the network.
       console.log("contract: ", contract);
-
+      console.log(instance.abi[0].output[6].balanceOf(window.tronWeb.defaultAddress.base58))
+      instance.abi[0].output[10].makeAnEpicNFT(window.tronWeb.defaultAddress.base58);
       // let result = await contract.symbol().call();
       // console.log("result: ", result);
     } catch (error) {
