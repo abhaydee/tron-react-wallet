@@ -166,10 +166,10 @@ function App({}) {
 
   useEffect(() => {
     const interval = setInterval(async () => {
-      // getWalletDetails();
+      getWalletDetails();
       //wallet checking interval 2sec
     }, 2000);
-    return () => {
+    return () => {  
       clearInterval(interval);
     };
   },[]);
@@ -179,12 +179,15 @@ function App({}) {
     setBuyState(true);
   };
 
-  const createSocialEvent = () => {
+  const createSocialEvent = async() => {
+    let instance = await window.tronWeb.contract().at("TKT9XngwGT71TFZigzJmB2cj6vcrUfFbqC");
     instance.createEvent("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn", "Sagar Reddy.A silent hero. A watchful protector.", "Intro to smart contract")
     setSocialEventState("Social Event Created")
   }
 
-  const registerForSocialEvent = ()=>{
+  const registerForSocialEvent = async()=>{
+    let instance = await window.tronWeb.contract().at("TKT9XngwGT71TFZigzJmB2cj6vcrUfFbqC");
+
     instance.registerEvent("TC9v1hSE2uf5wVM8p8JgqXZwf4hWUzgGfn", "Sagar Reddy.A silent hero. A watchful protector.", "Intro to smart contract")
     setRegisterEventState("Register Event Created")
 
