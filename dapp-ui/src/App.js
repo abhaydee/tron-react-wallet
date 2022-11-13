@@ -12,6 +12,15 @@ function App({}) {
   const [mintedState2, setMintedState2] = useState("BUY");
   const [mintedState3, setMintedState3] = useState("BUY");
   const [walletState, setWalletState] = useState("Connect wallet");
+  const HttpProvider = TronWeb.providers.HttpProvider; // This provider is optional, you can just use a url for the nodes instead
+  const fullNode = new HttpProvider("https://api.trongrid.io"); // Full node http endpoint
+  const solidityNode = new HttpProvider("https://api.trongrid.io"); // Solidity node http endpoint
+  const eventServer = "https://api.trongrid.io/";
+
+  const privateKey =
+    "930f604f50a311d849b5102c9134d41ab1ab994bfee7721278d8017207ec3377";
+
+  const tronWeb = new TronWeb(fullNode, solidityNode, eventServer, privateKey);
   async function triggerSmartContract(nftId) {
     if(nftId ===1){
       setMintedState("Minting.....");
@@ -42,10 +51,10 @@ function App({}) {
 
       }
       else if(nftId ===2){
-        setMintedState("Minted");
+        setMintedState2("Minted");
       }
       else {
-        setMintedState("Minted")
+        setMintedState3("Minted")
       }
     } catch (error) {
       console.error("trigger smart contract error", error);
@@ -159,7 +168,7 @@ function App({}) {
     return () => {
       clearInterval(interval);
     };
-  });
+  },[]);
 
   const navigateToBuyMerge = () => {
     //  navigate("/merge")
@@ -179,7 +188,7 @@ function App({}) {
   };
 
   const connectWallet = async () => {
-    getWalletDetails();
+    getWalletDetails(); 
   };
   return (
     <>
