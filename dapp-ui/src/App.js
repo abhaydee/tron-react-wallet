@@ -9,9 +9,20 @@ const TronWeb = require("tronweb");
 function App({}) {
   const [buyState, setBuyState] = useState(false);
   const [mintedState, setMintedState] = useState("BUY");
-  const [walletState, setWalletState] = useState("Connect wallet")
-  async function triggerSmartContract() {
-    setMintedState("Minting.....");
+  const [mintedState2, setMintedState2] = useState("BUY");
+  const [mintedState3, setMintedState3] = useState("BUY");
+  const [walletState, setWalletState] = useState("Connect wallet");
+  async function triggerSmartContract(nftId) {
+    if(nftId ===1){
+      setMintedState("Minting.....");
+    }
+    else if(nftId===2){
+      setMintedState2("Minting.....");
+    }
+    else {
+      setMintedState3("Minting.....")
+    }
+
     const trc721ContractAddress = "TDXDt9aCYd4rRvK2VzPLQbTX1WHzJQxP6k"; //contract address
     try {
       let instance = await window.tronWeb.contract().at(trc721ContractAddress);
@@ -26,7 +37,16 @@ function App({}) {
       instance.makeAnEpicNFT(window.tronWeb.defaultAddress.base58);
       // let result = await contract.symbol().call();
       // console.log("result: ", result);
-      setMintedState("Minted");
+      if(nftId===1){
+        setMintedState("Minted");
+
+      }
+      else if(nftId ===2){
+        setMintedState("Minted");
+      }
+      else {
+        setMintedState("Minted")
+      }
     } catch (error) {
       console.error("trigger smart contract error", error);
     }
@@ -104,7 +124,7 @@ function App({}) {
 
         //we have wallet and we are logged in
         setMyMessage(<h3>WALLET CONNECTED</h3>);
-        setWalletState("Tron Link Connected")
+        setWalletState("Tron Link Connected");
         setMyDetails({
           name: window.tronWeb.defaultAddress.name,
           address: window.tronWeb.defaultAddress.base58,
@@ -146,13 +166,13 @@ function App({}) {
     setBuyState(true);
   };
 
-  const buyNft = async () => {
-    triggerSmartContract()
+  const buyNft = async (nftId) => {
+    triggerSmartContract(nftId);
   };
 
-  const connectWallet = async () =>{
+  const connectWallet = async () => {
     getWalletDetails();
-  }
+  };
   return (
     <>
       <div className="App">
@@ -172,15 +192,14 @@ function App({}) {
             <h4>Network Selected: {myDetails.network}</h4>
             <h4>Link Established: {myDetails.link}</h4>
             <div className="flexColumn">
-              
-                 <button
-                 className="cta-button connect-wallet-button"
-                 onClick={connectWallet}
-               >
-                 {" "}
-                 {walletState}
-               </button>
-              
+              <button
+                className="cta-button connect-wallet-button"
+                onClick={connectWallet}
+              >
+                {" "}
+                {walletState}
+              </button>
+
               {myDetails.name && (
                 <button
                   className="cta-button connect-wallet-button"
@@ -211,12 +230,13 @@ function App({}) {
               src="https://litb-cgis.rightinthebox.com/images/640x853/202012/ctwzqr1608192948083.jpg?fmt=webp&v=1"
               width={100}
               height={100}
+              alt="nft"
             />
             <h4> NFT 1</h4>
             <p> NFT1 description</p>
             <button
               className="cta-button connect-wallet-button"
-              onClick={buyNft}
+              onClick={() => buyNft(1)}
             >
               {mintedState}
             </button>
@@ -226,12 +246,17 @@ function App({}) {
               src="https://litb-cgis.rightinthebox.com/images/640x853/202210/bps/product/inc/bncrjp1666791507145.jpg?fmt=webp&v=1"
               width={100}
               height={100}
+              alt="nft"
+
             />
             <h4> NFT 2</h4>
             <p> NFT1 description</p>
-            <button className="cta-button connect-wallet-button">
+            <button
+              className="cta-button connect-wallet-button"
+              onClick={() => buyNft(2)}
+            >
               {" "}
-              {mintedState}
+              {mintedState2}
             </button>
           </div>
           <div className="card">
@@ -239,12 +264,16 @@ function App({}) {
               src="https://litb-cgis.rightinthebox.com/images/640x853/202210/bps/product/inc/qxqjzp1666791531615.jpg?fmt=webp&v=1"
               width={100}
               height={100}
+              alt="nft"
             />
             <h4> NFT 3</h4>
             <p> NFT1 description</p>
-            <button className="cta-button connect-wallet-button">
+            <button
+              className="cta-button connect-wallet-button"
+              onClick={() => buyNft(3)}
+            >
               {" "}
-              {mintedState}
+              {mintedState3}
             </button>
           </div>
         </div>
