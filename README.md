@@ -19,3 +19,9 @@ We got a clear understanding of the smart contracts on Tron in addition to the T
 
 ## What's next for Iamgroot
 We are planning on putting billboards around the campus for groups to promote their events or the news around the campus in real time
+
+
+## What TRON technologies do we specifically leverage for now
+
+FRONTEND : TRON LINK, TRON WEB,
+SMART CONTRACT : TRON IDE, SOLIDITY, TRON NILE TestNET
